@@ -50,8 +50,8 @@ def time_fixed_squarings(squarings):
         r_ = (r_ ** 2) % n
     stop = now()
     seconds = (stop - start) / MILI_TO_S
-    print("Time taken GMPY:", seconds)
-    print("Squaring rate GMPY:", squarings / seconds)
+    print("Time taken GMPY (infix):", seconds)
+    print("Squaring rate GMPY (infix):", squarings / seconds)
 
     r_ = gmpy2.mpz(r)
     start = now()
@@ -59,8 +59,8 @@ def time_fixed_squarings(squarings):
         r_ = gmpy2.powmod(r_, 2, n)
     stop = now()
     seconds = (stop - start) / MILI_TO_S
-    print("Time taken GMPY (infix):", seconds)
-    print("Squaring rate GMPY (infix):", squarings / seconds)
+    print("Time taken GMPY:", seconds)
+    print("Squaring rate GMPY:", squarings / seconds)
 
 
     # We use the same parameters as in the other implementation
