@@ -36,28 +36,51 @@ def time_fixed_squarings(squarings):
     r = 1743724424099666811431147607616692728826896443514242207251022167360334231794188502189239727905681649520198367880849093018870101376967446659325924877661130735527461957163130540894138745900941923700245232830214433940492810834306971987060530021931099050876151469281045398509726082192914920014136006891577804647901082138191447261475413873009694783720641377347310893325563523104910130150196172994236840850382206150539461295079402510124994605171161856343241143526252650336130173751940408292960684250460120602910899431931616599866508397641635456344269448841436759323323914976248980825239042395258981917924022550563782923632
 
     start = now()
+    r_ = r
     for _ in range(squarings):
-        r = (r ** 2) % n
+        r_ = (r_ ** 2) % n
     stop = now()
     seconds = (stop - start) / MILI_TO_S
     print("Time taken naive:", seconds)
     print("Squaring rate naive:", squarings / seconds)
 
+    r_ = gmpy2.mpz(r)
     start = now()
     for _ in range(squarings):
-        r = gmpy2.powmod(r, 2, n)
+        r_ = (r_ ** 2) % n
     stop = now()
     seconds = (stop - start) / MILI_TO_S
     print("Time taken GMPY:", seconds)
     print("Squaring rate GMPY:", squarings / seconds)
 
-    # We use the same parameters as in the other implementation
-    Zn = IntegerModRing(n)
-    r = Zn(r)
-
+    r_ = gmpy2.mpz(r)
     start = now()
     for _ in range(squarings):
-        power(r, 2)
+        r_ = gmpy2.powmod(r_, 2, n)
+    stop = now()
+    seconds = (stop - start) / MILI_TO_S
+    print("Time taken GMPY (infix):", seconds)
+    print("Squaring rate GMPY (infix):", squarings / seconds)
+
+
+    # We use the same parameters as in the other implementation
+    Zn = IntegerModRing(n)
+    r_ = Zn(r)
+    start = now()
+    for _ in range(squarings):
+        r_ = r_ ** 2
+
+    stop = now()
+    seconds = (stop - start) / MILI_TO_S
+    print("Time taken for Sage (infix):", seconds)
+    print("Squaring rate Sage (infix):", squarings / seconds)
+
+
+    r_ = Zn(r)
+    start = now()
+    for _ in range(squarings):
+        r_ = power(r_, 2)
+
     stop = now()
     seconds = (stop - start) / MILI_TO_S
     print("Time taken for Sage:", seconds)
